@@ -1,0 +1,6 @@
+%description%
+
+You have received the following information, notice the order of these information are randomly shuffle, the order of facts does not indicate importance or relationship, please reason carefully:
+%information%
+
+Keep your response concise—just one or two sentences. %extra%

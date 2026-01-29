@@ -1,0 +1,96 @@
+What you’re building
+
+Create a group decision task where:
+- Everyone sees the same scenario and shared facts.
+- Each participant also gets one unique hidden fact that no one else has.
+- If people rely only on the shared facts plus their own single hidden fact, they’ll be pulled toward a specific wrong option.
+- Only by sharing all hidden facts can the group see that one option is definitely correct and the others can’t be right.
+
+Output format (match this structure)
+- name: A string, representing the name of the task.
+- description: A short scenario everyone sees.
+- shared_information: A list of facts everyone starts with.
+- hidden_information: A list with one item per participant. (If you have 4 participants, include 4 hidden items—one per person.)
+- possible_answers: The set of choices to pick from (include at least three).
+- correct_answer: The single correct choice (must be one of the options).
+
+Design rules (must all be true)
+- At least three options. Exactly one is correct.
+- One hidden item per participant. No item is duplicated; each goes to exactly one person.
+- Shared info is misleading on its own. It should naturally point the group toward a particular decoy (a wrong option).
+- Shared info + any single hidden item still misleads. If a participant considers only the shared info and their own hidden item, the decoy should still look best.
+- All hidden items together reveal the truth. When the group pools every hidden item, the decoy clearly fails and the correct answer is the only choice that fits all facts.
+- Every hidden item matters. If you remove any one hidden item, the correct answer should no longer be uniquely identifiable.
+
+Step-by-step recipe
+1. Pick the basics.
+	- Choose the number of participants.
+	- Choose at least three options and decide which one is correct.
+	- Choose one decoy option you want the shared info to favor at first.
+2. Write the shared information.
+	- Include solid, plausible facts that make the decoy look like the best choice before any sharing happens.
+	- Avoid giving away the correct answer here.
+3. Create the hidden items (one per participant).
+	- Each hidden item should be credible and different from the others.
+	- No single hidden item should be enough to prove the correct answer by itself.
+	- Across all hidden items, include the decisive details that:
+	- Disqualify the decoy from multiple angles, and
+	- Show why the correct answer is the only one that satisfies everything.
+4. Do the three checks (and revise if needed).
+	- Solo check: For each participant, ask: “With only the shared info and this person’s hidden item, which option looks best?” It should be the decoy, not the correct answer.
+	- Group check: With the shared info and all hidden items combined, only the correct answer should still make sense; every other option should clash with at least one fact.
+	- Missing-piece check: Remove any one hidden item and confirm the correct answer is no longer uniquely determined.
+
+An example task:
+{
+    "name": "evacuation_west_city",
+    "description": "You are participating in a study, acting as a community leader of a small village surrounded by mountains and rivers. Most villagers own cars, but there are also elderly people and children who may need additional assistance when walking. Earlier today, heavy rain began to fall, and the local government issued a warning about a potential disaster.\nHours ago, you requested relief supplies, but the supply truck has yet to arrive. Now, the rain has temporarily stopped, giving you and the other three community leaders a short window to decide on the safest evacuation route before the rain resumes. You don’t know how much time you have left to make this critical decision.\nYour Task:\nYou will discuss with three other participants, who are also acting as community leaders, to decide where to evacuate. You have three options:\n- West City: Accessible through a bridge over the river.\n- East Town: Accessible through a tunnel on middle ground.\n- North Hill: Accessible through a driveway and walking trails.\nUsually, it takes the same time to reach all three places by car, but some routes may be inaccessible now.\nThere is only one correct evacuation location. After the discussion:\n- If you choose the correct location, you will earn $1.\n- If all other participants also choose the correct location, you will earn an additional $1 (for a total of $2).\nThis means that coordinating with others is critical to maximize your rewards. The chat will at most take 15 minutes. However, the exact time when the chat will end is unknown.",
+    "shared_information": [
+        "The local government announced that hotels in West City are prepared to accommodate evacuees. While these hotels are fully stocked with food, they may lack medical supplies.",
+        "The mayor of East Town has offered accommodations for any evacuees. She also ensures that volunteers are available to assist them.",
+        "The school at North Hill can serve as a temporary evacuation center, providing a two-week supply of essentials and sleeping space in the gym.",
+        "The river level is still below the bridge to West City."
+    ],
+    "hidden_information": [
+        "The supply truck headed to the village from East Town was stuck in the tunnel.",
+        "A massive fire has blocked the supply truck and all other traffic.",
+        "The walking trails have been closed since last weekend due to fallen trees.",
+        "Several villagers reported that a mudslide just occurred, covering the driveway to North Hill."
+    ],
+    "possible_answers": [
+        "West City",
+        "East Town",
+        "North Hill"
+    ],
+    "correct_answer": "West City"
+}
+
+In this example, when participants see the description, the shared information and one piece of hidden information, they will select a wrong answer. But when they see all the information, they will see that the massive fire has blocked the way to East Town, and the walking trails and driveway to North Hill both are inaccessibile, making West City the only valid option.
+
+Practical tips
+- Think like a mystery: the shared info sets up a convincing—but wrong—first impression. The hidden items are the clues that overturn it only when combined.
+- Keep each hidden item short and precise (one clear fact per item).
+- Avoid redundancy: each hidden item, or the combination of two items, should rule out or confirm something different.
+- In your notes, make a quick elimination table (rows = facts, columns = options). Mark which options survive each fact. By the end, only the correct option should survive all rows.
+- If someone sees the description, all shared and all hidden facts, they should identify the correct answer before any discussion.
+- If someone sees only the description, the shared facts plus one hidden fact, they should not be able to identify the correct answer before discussion.
+
+Create one new task. Respond in the following format:
+{
+    "rationale": <A string representing your rationale for desiging this task. Think step by step: think about the case where participants can see the complete information, and the cases where they can only see the description, the shared information and one piece of hidden information. If someone sees the description, all shared and all hidden facts, they should identify the correct answer before any discussion. If someone sees only the description, the shared facts plus one hidden fact, they should not be able to identify the correct answer before discussion.>
+    "name": <A string, representing the name of the task>,
+    "description": <A string, representing the description of the task>,
+    "shared_information": [
+        <A string, representing a piece of shared information>,
+        ...
+    ],
+    "hidden_information": [
+        <A string, representing a piece of hidden information>,
+        ...
+    ],
+    "possible_answers": [
+        <A string, representing a possible answer>,
+        ...
+    ],
+    "correct_answer": <A string, representing the correct answer> 
+}
